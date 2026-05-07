@@ -6,6 +6,10 @@
 
 ---
 
+![Time Manager Screenshot](assets/screenshot.png)
+
+---
+
 ## Features
 
 | Feature | Description |
