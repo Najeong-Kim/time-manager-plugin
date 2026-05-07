@@ -1,0 +1,310 @@
+/* Time Manager Plugin Styles */
+
+.time-manager-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  font-size: 13px;
+  overflow: hidden;
+}
+
+.tm-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* ── Header ── */
+.tm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  flex-shrink: 0;
+}
+
+.tm-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tm-date-label {
+  font-weight: 600;
+  min-width: 120px;
+  text-align: center;
+}
+
+.tm-add-btn {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.tm-add-btn:hover { opacity: 0.85; }
+
+/* ── Timeline ── */
+.tm-timeline-wrapper {
+  position: relative;
+  margin: 0 0 8px 0;
+  overflow: hidden;
+}
+
+.tm-time-axis {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48px;
+}
+
+.tm-hour-label {
+  position: absolute;
+  left: 4px;
+  font-size: 10px;
+  color: var(--text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.tm-hour-line {
+  position: absolute;
+  left: 44px;
+  right: 0;
+  height: 1px;
+  background: var(--background-modifier-border);
+  width: calc(100vw - 48px);
+  pointer-events: none;
+}
+
+.tm-task-layer {
+  position: absolute;
+  left: 48px;
+  right: 0;
+  top: 0;
+}
+
+/* ── Now Line ── */
+.tm-now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e53935;
+  z-index: 5;
+  pointer-events: none;
+}
+.tm-now-line::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: #e53935;
+  border-radius: 50%;
+}
+
+/* ── Task Block ── */
+.tm-task-block {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  background: var(--background-secondary);
+  border-radius: 4px;
+  border-left: 4px solid var(--interactive-accent);
+  padding: 3px 6px;
+  overflow: hidden;
+  cursor: default;
+  transition: box-shadow 0.15s;
+}
+.tm-task-block:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.tm-task-completed {
+  opacity: 0.55;
+}
+
+
+.tm-task-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tm-task-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.tm-task-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tm-task-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.tm-task-cat {
+  background: var(--background-modifier-hover);
+  border-radius: 3px;
+  padding: 0 4px;
+}
+
+
+.tm-task-time-info { color: var(--text-muted); }
+
+.tm-task-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.tm-task-actions button {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  cursor: pointer;
+}
+
+.tm-task-actions button:hover { background: var(--background-modifier-hover); }
+
+/* ── Stats ── */
+.tm-stats {
+  padding: 10px 12px;
+  border-top: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  flex-shrink: 0;
+}
+
+.tm-stats-summary {
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: var(--text-normal);
+}
+
+.tm-over-warning {
+  font-size: 11px;
+  color: #ffa726;
+  margin-bottom: 6px;
+}
+
+.tm-bar-chart { display: flex; flex-direction: column; gap: 6px; }
+
+.tm-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.tm-cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tm-bar-label {
+  width: 52px;
+  flex-shrink: 0;
+  color: var(--text-normal);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tm-bar-wrap {
+  flex: 1;
+  height: 10px;
+  background: var(--background-secondary);
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.tm-bar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s;
+}
+
+.tm-bar-dur {
+  /* background layer */
+}
+
+.tm-bar-done {
+  /* foreground layer on top */
+}
+
+.tm-bar-value-wrap {
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 72px;
+  font-size: 11px;
+}
+
+.tm-bar-value-done {
+  color: var(--text-normal);
+  font-weight: 500;
+}
+
+.tm-bar-value-dur {
+  color: var(--text-muted);
+}
+
+/* ── Editor Highlights ── */
+.tm-editor-time {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.tm-editor-dur {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+/* ── Category Suggest ── */
+.tm-suggest-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tm-suggest-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tm-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 20px;
+  font-size: 12px;
+}
+

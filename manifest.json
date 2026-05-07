@@ -1,0 +1,9 @@
+{
+  "id": "time-manager",
+  "name": "Time Manager",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Visual timeline, real-time task timer, and estimated vs actual time tracking.",
+  "author": "Najeong Kim",
+  "isDesktopOnly": false
+}
