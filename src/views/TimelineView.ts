@@ -99,7 +99,7 @@ export class TimelineView extends ItemView {
     const nextBtn = nav.createEl("button", { text: "▶" });
     nextBtn.addEventListener("click", () => this.navigate(1));
 
-    const addBtn = header.createEl("button", { text: "+ 태스크", cls: "tm-add-btn" });
+    const addBtn = header.createEl("button", { text: "+ Task", cls: "tm-add-btn" });
     addBtn.addEventListener("click", () => this.openAddTaskModal());
   }
 
@@ -107,7 +107,7 @@ export class TimelineView extends ItemView {
     const wrapper = container.createDiv("tm-timeline-wrapper");
 
     if (!this.currentFile && this.tasks.length === 0) {
-      wrapper.createEl("p", { text: "이 날짜의 노트가 없습니다.", cls: "tm-empty" });
+      wrapper.createEl("p", { text: "No note found for this date.", cls: "tm-empty" });
       return;
     }
 
@@ -215,7 +215,7 @@ export class TimelineView extends ItemView {
 
     if (stats.overScheduled) {
       statsEl.createEl("div", {
-        text: `⚠ ${formatDuration(stats.totalDur)} 예약됨 (${this.settings.workingHoursLimit}h 초과)`,
+        text: `⚠ ${formatDuration(stats.totalDur)} scheduled (exceeds ${this.settings.workingHoursLimit}h limit)`,
         cls: "tm-over-warning",
       });
     }
@@ -285,26 +285,26 @@ class AddTaskModal extends Modal {
 
   onOpen(): void {
     const { contentEl } = this;
-    contentEl.createEl("h3", { text: "태스크 추가" });
+    contentEl.createEl("h3", { text: "Add Task" });
 
-    new Setting(contentEl).setName("시작 시간 (HH:MM)").addText((t) => {
+    new Setting(contentEl).setName("Start time (HH:MM)").addText((t) => {
       const now = new Date();
       t.setValue(`${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`);
       this.startTime = t.getValue();
       t.onChange((v) => (this.startTime = v));
     });
 
-    new Setting(contentEl).setName("태스크 이름").addText((t) => {
+    new Setting(contentEl).setName("Task name").addText((t) => {
       t.onChange((v) => (this.title = v));
       t.inputEl.focus();
     });
 
-    new Setting(contentEl).setName("예상 시간 (분)").addText((t) => {
+    new Setting(contentEl).setName("Duration (minutes)").addText((t) => {
       t.setPlaceholder("30");
       t.onChange((v) => (this.est = v));
     });
 
-    new Setting(contentEl).setName("카테고리").addDropdown((d) => {
+    new Setting(contentEl).setName("Category").addDropdown((d) => {
       for (const c of this.settings.categories) {
         d.addOption(c.id, c.label);
       }
@@ -314,9 +314,9 @@ class AddTaskModal extends Modal {
     });
 
     new Setting(contentEl).addButton((b) => {
-      b.setButtonText("추가").setCta().onClick(async () => {
+      b.setButtonText("Add").setCta().onClick(async () => {
         if (!this.startTime || !this.title) {
-          new Notice("시간과 태스크 이름은 필수입니다.");
+          new Notice("Start time and task name are required.");
           return;
         }
         let line = `- [ ] ${this.startTime} ${this.title}`;

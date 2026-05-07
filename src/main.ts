@@ -16,13 +16,13 @@ export default class TimeManagerPlugin extends Plugin {
       (leaf: WorkspaceLeaf) => new TimelineView(leaf, this.settings)
     );
 
-    this.addRibbonIcon("clock", "Time Manager 타임라인 열기", () => {
+    this.addRibbonIcon("clock", "Open Time Manager Timeline", () => {
       this.activateView();
     });
 
     this.addCommand({
       id: "open-timeline",
-      name: "타임라인 열기",
+      name: "Open Timeline",
       callback: () => this.activateView(),
     });
 

@@ -38,9 +38,10 @@ export function elapsedMinutes(startEpoch: number): number {
 
 
 export function formatDayLabel(date: Date): string {
-  const days = ["일", "월", "화", "수", "목", "금", "토"];
-  const m = date.getMonth() + 1;
-  const d = date.getDate();
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const dow = days[date.getDay()];
-  return `${m}월 ${d}일 (${dow})`;
+  const mon = months[date.getMonth()];
+  const d = date.getDate();
+  return `${mon} ${d} (${dow})`;
 }

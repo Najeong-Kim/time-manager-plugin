@@ -25,7 +25,7 @@ export interface CategoryConfig {
 }
 
 export const DEFAULT_SETTINGS: PluginSettings = {
-  dailyNoteFolder: "오늘의 일일 노트",
+  dailyNoteFolder: "Daily Notes",
   dailyNoteDateFormat: "YYYY-MM-DD",
   plannerLabel: "Timeline",
   workingHoursLimit: 8,
