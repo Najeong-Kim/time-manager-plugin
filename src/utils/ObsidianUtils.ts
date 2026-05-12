@@ -1,11 +1,11 @@
 import { App, TFile, normalizePath } from "obsidian";
 import { formatDate } from "./DateUtils";
 
-export async function getDailyNoteFile(
+export function getDailyNoteFile(
   app: App,
   date: Date,
   folder: string
-): Promise<TFile | null> {
+): TFile | null {
   const dateStr = formatDate(date);
   const path = normalizePath(`${folder}/${dateStr}.md`);
   const file = app.vault.getAbstractFileByPath(path);
@@ -18,7 +18,7 @@ export async function getOrCreateDailyNoteFile(
   folder: string,
   plannerLabel: string
 ): Promise<TFile> {
-  const existing = await getDailyNoteFile(app, date, folder);
+  const existing = getDailyNoteFile(app, date, folder);
   if (existing) return existing;
 
   const dateStr = formatDate(date);

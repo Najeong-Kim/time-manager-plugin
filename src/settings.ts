@@ -9,15 +9,15 @@ export class TimeManagerSettingTab extends PluginSettingTab {
   display(): void {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Time Manager Settings" });
+    new Setting(containerEl).setName("Time manager").setHeading();
 
     const folders = this.app.vault.getAllFolders()
       .map((f: TFolder) => f.path)
       .sort();
 
     new Setting(containerEl)
-      .setName("Daily Note folder")
-      .setDesc("Folder where your Daily Notes are stored")
+      .setName("Daily note folder")
+      .setDesc("Folder where your daily notes are stored")
       .addDropdown((d) => {
         for (const folder of folders) {
           d.addOption(folder, folder || "(root)");
@@ -31,7 +31,7 @@ export class TimeManagerSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Section heading")
-      .setDesc("The ## section name in your Daily Note to parse as the timeline")
+      .setDesc("The ## section name in your daily note to parse as the timeline")
       .addText((t) =>
         t
           .setValue(this.plugin.settings.plannerLabel)

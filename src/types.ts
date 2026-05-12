@@ -19,7 +19,7 @@ export interface PluginSettings {
 }
 
 export interface CategoryConfig {
-  id: Category | string;
+  id: string;
   label: string;
   color: string;
 }

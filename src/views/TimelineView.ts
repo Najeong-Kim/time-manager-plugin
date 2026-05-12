@@ -28,7 +28,7 @@ export class TimelineView extends ItemView {
   }
 
   getViewType(): string { return TIME_MANAGER_VIEW_TYPE; }
-  getDisplayText(): string { return "Time Manager"; }
+  getDisplayText(): string { return "Time manager"; }
   getIcon(): string { return "clock"; }
 
   async onOpen(): Promise<void> {
@@ -39,13 +39,13 @@ export class TimelineView extends ItemView {
 
     this.registerEvent(
       this.app.vault.on("modify", (file) => {
-        if (file === this.currentFile) this.reload();
+        if (file === this.currentFile) void this.reload();
       })
     );
 
     this.registerEvent(
       this.app.workspace.on("active-leaf-change", (leaf) => {
-        if (leaf === this.leaf) this.render();
+        if (leaf === this.leaf) void this.render();
       })
     );
   }
@@ -66,7 +66,7 @@ export class TimelineView extends ItemView {
     const { contentEl } = this;
     contentEl.empty();
 
-    this.currentFile = await getDailyNoteFile(
+    this.currentFile = getDailyNoteFile(
       this.app,
       this.currentDate,
       this.settings.dailyNoteFolder
@@ -92,14 +92,14 @@ export class TimelineView extends ItemView {
 
     const nav = header.createDiv("tm-nav");
     const prevBtn = nav.createEl("button", { text: "◀" });
-    prevBtn.addEventListener("click", () => this.navigate(-1));
+    prevBtn.addEventListener("click", () => { void this.navigate(-1); });
 
     nav.createEl("span", { text: formatDayLabel(this.currentDate), cls: "tm-date-label" });
 
     const nextBtn = nav.createEl("button", { text: "▶" });
-    nextBtn.addEventListener("click", () => this.navigate(1));
+    nextBtn.addEventListener("click", () => { void this.navigate(1); });
 
-    const addBtn = header.createEl("button", { text: "+ Task", cls: "tm-add-btn" });
+    const addBtn = header.createEl("button", { text: "+ task", cls: "tm-add-btn" });
     addBtn.addEventListener("click", () => this.openAddTaskModal());
   }
 
@@ -237,7 +237,7 @@ export class TimelineView extends ItemView {
       const barDur = barWrap.createDiv("tm-bar-fill tm-bar-dur");
       barDur.style.width = `${(cat.durMinutes / maxMinutes) * 100}%`;
       barDur.style.backgroundColor = cat.color;
-      barDur.style.opacity = "0.3";
+      barDur.setCssProps({ opacity: "0.3" });
 
       const barDone = barWrap.createDiv("tm-bar-fill tm-bar-done");
       barDone.style.width = `${cat.durMinutes > 0 ? (cat.doneMinutes / cat.durMinutes) * (cat.durMinutes / maxMinutes) * 100 : 0}%`;
@@ -285,7 +285,7 @@ class AddTaskModal extends Modal {
 
   onOpen(): void {
     const { contentEl } = this;
-    contentEl.createEl("h3", { text: "Add Task" });
+    contentEl.createEl("h3", { text: "Add task" });
 
     new Setting(contentEl).setName("Start time (HH:MM)").addText((t) => {
       const now = new Date();
