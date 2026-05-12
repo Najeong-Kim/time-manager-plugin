@@ -1,11 +1,14 @@
 /* Time Manager Plugin Styles */
 
 .time-manager-view {
+  font-size: 13px;
+}
+
+.tm-content {
   display: flex;
   flex-direction: column;
   height: 100%;
   padding: 0;
-  font-size: 13px;
   overflow: hidden;
 }
 
@@ -260,9 +263,10 @@
 }
 
 .tm-bar-value-wrap {
-  flex-shrink: 0;
+  flex: 0 0 96px;
   text-align: right;
-  min-width: 72px;
+  white-space: nowrap;
+  overflow: hidden;
   font-size: 11px;
 }
 

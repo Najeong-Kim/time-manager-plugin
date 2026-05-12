@@ -21,6 +21,8 @@ export class TimelineView extends ItemView {
   private tasks: Task[] = [];
   private currentFile: TFile | null = null;
   private nowLineInterval: number | null = null;
+  private taskLayer: HTMLElement | null = null;
+  private renderToken = 0;
 
   constructor(leaf: WorkspaceLeaf, private settings: PluginSettings) {
     super(leaf);
@@ -33,7 +35,7 @@ export class TimelineView extends ItemView {
 
   async onOpen(): Promise<void> {
     this.containerEl.addClass("time-manager-view");
-    await this.render();
+    this.contentEl.addClass("tm-content");
 
     this.nowLineInterval = window.setInterval(() => this.updateNowLine(), 60 * 1000);
 
@@ -44,10 +46,29 @@ export class TimelineView extends ItemView {
     );
 
     this.registerEvent(
+      this.app.vault.on("create", (file) => {
+        if (file instanceof TFile) void this.render();
+      })
+    );
+
+    this.registerEvent(
+      this.app.workspace.on("file-open", (file) => {
+        if (!file) return;
+        const date = this.parseDailyNoteDate(file);
+        if (date) {
+          this.currentDate = date;
+          void this.render();
+        }
+      })
+    );
+
+    this.registerEvent(
       this.app.workspace.on("active-leaf-change", (leaf) => {
         if (leaf === this.leaf) void this.render();
       })
     );
+
+    this.app.workspace.onLayoutReady(() => void this.render());
   }
 
   async onClose(): Promise<void> {
@@ -63,8 +84,8 @@ export class TimelineView extends ItemView {
   }
 
   private async render(): Promise<void> {
+    const token = ++this.renderToken;
     const { contentEl } = this;
-    contentEl.empty();
 
     this.currentFile = getDailyNoteFile(
       this.app,
@@ -74,13 +95,17 @@ export class TimelineView extends ItemView {
 
     if (this.currentFile) {
       const content = await this.app.vault.read(this.currentFile);
+      if (token !== this.renderToken) return;
       this.tasks = parseTasks(content, this.settings.plannerLabel);
     } else {
       this.tasks = [];
     }
 
+    this.taskLayer = null;
+    contentEl.empty();
+
     this.renderHeader();
-    this.contentEl.createDiv("tm-scroll-area", (el) => {
+    contentEl.createDiv("tm-scroll-area", (el) => {
       this.renderTimeline(el);
     });
     this.renderStats();
@@ -113,7 +138,7 @@ export class TimelineView extends ItemView {
 
     const timeAxis = wrapper.createDiv("tm-time-axis");
     const taskLayer = wrapper.createDiv("tm-task-layer");
-    taskLayer.id = "tm-task-layer";
+    this.taskLayer = taskLayer;
 
     const dayStartMin = DAY_START_HOUR * 60;
     const lastTask = this.tasks[this.tasks.length - 1];
@@ -139,7 +164,7 @@ export class TimelineView extends ItemView {
   }
 
   private renderTaskBlocks(): void {
-    const taskLayer = this.contentEl.querySelector<HTMLElement>("#tm-task-layer");
+    const taskLayer = this.taskLayer;
     if (!taskLayer) return;
 
     taskLayer.querySelectorAll(".tm-task-block").forEach((el) => el.remove());
@@ -201,9 +226,8 @@ export class TimelineView extends ItemView {
   }
 
   private updateNowLine(): void {
-    const taskLayer = this.contentEl.querySelector<HTMLElement>("#tm-task-layer");
-    if (!taskLayer) return;
-    this.renderNowLine(taskLayer, DAY_START_HOUR * 60);
+    if (!this.taskLayer) return;
+    this.renderNowLine(this.taskLayer, DAY_START_HOUR * 60);
   }
 
   private renderStats(): void {
@@ -252,6 +276,16 @@ export class TimelineView extends ItemView {
   private async navigate(delta: number): Promise<void> {
     this.currentDate = addDays(this.currentDate, delta);
     await this.render();
+  }
+
+  private parseDailyNoteDate(file: TFile): Date | null {
+    const folder = this.settings.dailyNoteFolder;
+    const prefix = folder ? folder + "/" : "";
+    if (prefix && !file.path.startsWith(prefix)) return null;
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(file.basename);
+    if (!m) return null;
+    const date = new Date(parseInt(m[1]), parseInt(m[2]) - 1, parseInt(m[3]));
+    return isNaN(date.getTime()) ? null : date;
   }
 
   private openAddTaskModal(): void {
