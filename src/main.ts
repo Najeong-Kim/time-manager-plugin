@@ -33,7 +33,7 @@ export default class TimeManagerPlugin extends Plugin {
   }
 
   async loadSettings(): Promise<void> {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, (await this.loadData()) as Partial<PluginSettings>);
     this.settings.categories = DEFAULT_SETTINGS.categories;
   }
 
@@ -48,6 +48,6 @@ export default class TimeManagerPlugin extends Plugin {
       leaf = workspace.getRightLeaf(false) ?? workspace.getLeaf(true);
       await leaf.setViewState({ type: TIME_MANAGER_VIEW_TYPE, active: true });
     }
-    workspace.revealLeaf(leaf);
+    void workspace.revealLeaf(leaf);
   }
 }

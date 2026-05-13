@@ -9,7 +9,6 @@ export class TimeManagerSettingTab extends PluginSettingTab {
   display(): void {
     const { containerEl } = this;
     containerEl.empty();
-    new Setting(containerEl).setName("Time manager").setHeading();
 
     const folders = this.app.vault.getAllFolders()
       .map((f: TFolder) => f.path)
