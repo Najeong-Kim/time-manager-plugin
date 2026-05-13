@@ -2,8 +2,8 @@
   "id": "time-manager",
   "name": "Time Manager",
   "version": "0.1.0",
-  "minAppVersion": "1.4.0",
-  "description": "Visualize your Daily Note tasks as a timeline and track completion by category.",
+  "minAppVersion": "1.7.2",
+  "description": "Organize Daily Note tasks into a visual timeline and track time by category.",
   "author": "Najeong Kim",
   "authorUrl": "https://github.com/Najeong-Kim",
   "isDesktopOnly": false
