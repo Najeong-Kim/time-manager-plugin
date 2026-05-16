@@ -1,10 +1,6 @@
-# Time Manager — Obsidian Plugin
+# Time Manager
 
-> An Obsidian plugin that visualizes tasks from your Daily Notes as a timeline and tracks completion by category so you can review your day at a glance.
-
-**Author:** Najeong Kim
-
----
+Visualize your Daily Note tasks as a timeline and track time spent by category — all inside Obsidian's sidebar.
 
 ![Time Manager Screenshot](assets/screenshot.png)
 
@@ -12,27 +8,27 @@
 
 ## Features
 
-| Feature | Description |
-|---------|-------------|
-| Visual timeline | Displays daily tasks as time blocks on a vertical time axis |
-| Task tracking | Records duration and category for each task |
-| Categories | Classify time into Work · Study · Personal · Hobby |
-| Daily stats | Per-category bar chart with an overload warning |
-| Editor autocomplete | Category suggestions when typing `@` |
-| Category highlight | Color highlights for `@tags` in the editor |
+- **Visual timeline** — tasks from your Daily Note rendered as time blocks on a vertical axis
+- **Category tracking** — tag tasks with `@work`, `@study`, `@personal`, or `@hobby`
+- **Daily stats** — bar chart showing scheduled vs. completed time per category
+- **Editor integration** — `@` autocomplete and color highlights while you write
+- **Date navigation** — browse any day with `◀` / `▶`, or click a Daily Note to jump to it
 
 ---
 
 ## Installation
 
-1. Obsidian Settings → **Community plugins** → Disable safe mode
-2. Copy the `time-manager` folder into `.obsidian/plugins/`
-3. Enable **Time Manager** in the community plugin list
-4. Click the clock (🕐) icon in the left ribbon to open the timeline
+1. Open Obsidian **Settings → Community plugins**
+2. Turn off **Restricted mode** if enabled
+3. Click **Browse**, search for **Time Manager**, and click **Install**
+4. Click **Enable**
+5. Click the clock icon in the left ribbon to open the timeline
 
 ---
 
-## Markdown format
+## Usage
+
+Add a `## Timeline` section to any Daily Note and write tasks in this format:
 
 ```markdown
 ## Timeline
@@ -44,113 +40,35 @@
 - [ ] 23:00 end
 ```
 
-### Inline fields
+The timeline updates automatically as you edit. Mark a task done by changing `[ ]` to `[x]`.
 
-| Format | Meaning | Example |
-|--------|---------|---------|
-| `@work` / `@personal` / `@study` / `@hobby` | Category tag | `@work` |
-| Trailing time notation | Duration (unit required) | `30m` · `1h` · `1h30m` |
-| `[cat:: X]` | Category (long form) | `[cat:: work]` |
-| `[dur:: N]` | Duration in minutes (long form) | `[dur:: 60]` |
-
-### Categories
-
-| ID | Label | Color |
-|----|-------|-------|
-| `work` | Work | Blue (`#4a9eff`) |
-| `study` | Study | Green (`#8bc34a`) |
-| `personal` | Personal | Yellow (`#f9a825`) |
-| `hobby` | Hobby | Purple (`#ce93d8`) |
-| (none) | Etc | Pink (`#f48fb1`) |
-
----
-
-## Usage
-
-### Opening the timeline
-
-- Click the clock icon (🕐) in the ribbon
-- Or open the command palette (`Cmd+P`) → `Open Timeline`
-
-### Adding tasks
-
-There are two ways to add tasks.
-
-#### Option 1: Modal
-
-Click the `+ Task` button at the top of the timeline.
-
-| Field | Description |
-|-------|-------------|
-| Start time | HH:MM format (defaults to current time) |
-| Task name | What you plan to do |
-| Duration | Number of minutes (optional) |
-| Category | Dropdown (Work / Study / Personal / Hobby / Etc) |
-
-The task is automatically inserted into the `## Timeline` section of your Daily Note, sorted by time.
-
-#### Option 2: Direct file editing
-
-Open your Daily Note and type directly into the `## Timeline` section:
+### Task format
 
 ```
 - [ ] HH:MM Task name @category duration
 ```
 
-Type `@` in the editor to trigger category autocomplete. Mark a task done by changing `[ ]` to `[x]` — it will be reflected in the stats immediately.
+| Field | Format | Example |
+|-------|--------|---------|
+| Time | `HH:MM` | `09:00` |
+| Category | `@work` · `@study` · `@personal` · `@hobby` | `@work` |
+| Duration | `30m` · `1h` · `1h30m` (unit required) | `1h30m` |
 
-### Navigating dates
+### Adding tasks
 
-Use the `◀` / `▶` buttons at the top of the timeline to browse other dates.
+Click **+ task** at the top of the timeline to open a modal — start time, name, duration, and category are filled in and inserted automatically into the correct position in your note.
 
 ---
 
 ## Settings
 
-Go to Obsidian Settings → **Time Manager** to configure.
+Go to **Settings → Time Manager**.
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| Daily Note folder | `Daily Notes` | Folder where your Daily Notes are stored (dropdown) |
-| Section heading | `Timeline` | The `##` section name to parse as the timeline |
-| Daily work hour limit | `8h` | Shows an overload warning when exceeded (4–16h slider) |
-
----
-
-## Development
-
-```bash
-# Development mode (watch)
-npm run dev
-
-# Production build
-npm run build
-
-# Type check
-npm run typecheck
-```
-
-### File structure
-
-```
-src/
-├── main.ts                  Plugin entry point
-├── settings.ts              Settings tab
-├── types.ts                 Shared type definitions
-├── parser/
-│   ├── DailyNoteParser.ts   Read/write markdown files
-│   └── InlineFieldParser.ts Parse @tags and [key:: value] fields
-├── editor/
-│   ├── CategorySuggest.ts   @ autocomplete in the editor
-│   └── CategoryHighlight.ts Color highlight for @tags in the editor
-├── views/
-│   └── TimelineView.ts      Sidebar timeline view
-├── stats/
-│   └── StatsCalculator.ts   Daily stats calculation
-└── utils/
-    ├── DateUtils.ts         Date/time utilities
-    └── ObsidianUtils.ts     Vault file access helpers
-```
+| Daily Note folder | `Daily Notes` | Folder where your Daily Notes are stored |
+| Section heading | `Timeline` | The `##` heading to parse as the timeline |
+| Daily work hour limit | `8h` | Shows a warning when scheduled time exceeds this (4–16h) |
 
 ---
 
