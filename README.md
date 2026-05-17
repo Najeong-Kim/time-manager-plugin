@@ -44,6 +44,8 @@ Tasks appear as time blocks on a vertical axis. The red line shows the current t
 - Click a Daily Note in the file explorer to jump to that date
 - Click **+ task** to add a task via modal
 
+![Add task screenshot](assets/screenshot-add-task.png)
+
 ### Daily stats
 
 A bar chart at the bottom shows scheduled vs. completed time per category.
