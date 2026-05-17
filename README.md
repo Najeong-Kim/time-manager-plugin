@@ -1,156 +1,93 @@
-# Time Manager — Obsidian Plugin
+# Time Manager
 
-> An Obsidian plugin that visualizes tasks from your Daily Notes as a timeline and tracks completion by category so you can review your day at a glance.
+**[English](README.md)** · [한국어](README.ko.md)
 
-**Author:** Najeong Kim
+Visualize your Daily Note tasks as a timeline and track time spent by category — all inside Obsidian's sidebar.
 
----
-
-![Time Manager Screenshot](assets/screenshot.png)
-
----
-
-## Features
-
-| Feature | Description |
-|---------|-------------|
-| Visual timeline | Displays daily tasks as time blocks on a vertical time axis |
-| Task tracking | Records duration and category for each task |
-| Categories | Classify time into Work · Study · Personal · Hobby |
-| Daily stats | Per-category bar chart with an overload warning |
-| Editor autocomplete | Category suggestions when typing `@` |
-| Category highlight | Color highlights for `@tags` in the editor |
+![Demo GIF](assets/demo.gif)
 
 ---
 
 ## Installation
 
-1. Obsidian Settings → **Community plugins** → Disable safe mode
-2. Copy the `time-manager` folder into `.obsidian/plugins/`
-3. Enable **Time Manager** in the community plugin list
-4. Click the clock (🕐) icon in the left ribbon to open the timeline
+1. Open **Settings → Community plugins → Browse**
+2. Search for **Time Manager** and click **Install**
+3. Click **Enable**, then click the 🕐 clock icon in the ribbon
 
 ---
 
-## Markdown format
+## Quick start
+
+Add a `## Timeline` section to today's Daily Note and paste this:
 
 ```markdown
 ## Timeline
 
-- [ ] 09:00 Team standup @work 30m
-- [x] 10:00 Feature development @work 2h
-- [ ] 13:00 Workout @personal 1h
-- [ ] 14:30 Algorithm study @study 1h30m
+- [ ] 09:00 Morning routine @personal 30m
+- [ ] 09:30 Deep work @work 2h
+- [ ] 12:00 Lunch @personal 1h
+- [ ] 13:00 Meetings @work 1h30m
 - [ ] 23:00 end
 ```
 
-### Inline fields
-
-| Format | Meaning | Example |
-|--------|---------|---------|
-| `@work` / `@personal` / `@study` / `@hobby` | Category tag | `@work` |
-| Trailing time notation | Duration (unit required) | `30m` · `1h` · `1h30m` |
-| `[cat:: X]` | Category (long form) | `[cat:: work]` |
-| `[dur:: N]` | Duration in minutes (long form) | `[dur:: 60]` |
-
-### Categories
-
-| ID | Label | Color |
-|----|-------|-------|
-| `work` | Work | Blue (`#4a9eff`) |
-| `study` | Study | Green (`#8bc34a`) |
-| `personal` | Personal | Yellow (`#f9a825`) |
-| `hobby` | Hobby | Purple (`#ce93d8`) |
-| (none) | Etc | Pink (`#f48fb1`) |
+The timeline renders instantly on the right. Edit the note and it updates live.
 
 ---
 
-## Usage
+## How it works
 
-### Opening the timeline
+### Timeline view
 
-- Click the clock icon (🕐) in the ribbon
-- Or open the command palette (`Cmd+P`) → `Open Timeline`
+Tasks appear as time blocks on a vertical axis. The red line shows the current time.
 
-### Adding tasks
+![Timeline screenshot](assets/screenshot-timeline.png)
 
-There are two ways to add tasks.
+- Click **◀ / ▶** to navigate between days
+- Click a Daily Note in the file explorer to jump to that date
+- Click **+ task** to add a task via modal
 
-#### Option 1: Modal
+![Add task screenshot](assets/screenshot-add-task.png)
 
-Click the `+ Task` button at the top of the timeline.
+### Daily stats
 
-| Field | Description |
-|-------|-------------|
-| Start time | HH:MM format (defaults to current time) |
-| Task name | What you plan to do |
-| Duration | Number of minutes (optional) |
-| Category | Dropdown (Work / Study / Personal / Hobby / Etc) |
+A bar chart at the bottom shows scheduled vs. completed time per category.
 
-The task is automatically inserted into the `## Timeline` section of your Daily Note, sorted by time.
+![Stats screenshot](assets/screenshot-stats.png)
 
-#### Option 2: Direct file editing
+### Editor highlights
 
-Open your Daily Note and type directly into the `## Timeline` section:
+Category tags and durations are highlighted as you type. Type `@` to get autocomplete.
+
+![Editor screenshot](assets/screenshot-editor.png)
+
+---
+
+## Task format
 
 ```
 - [ ] HH:MM Task name @category duration
 ```
 
-Type `@` in the editor to trigger category autocomplete. Mark a task done by changing `[ ]` to `[x]` — it will be reflected in the stats immediately.
+| Field | Options | Example |
+|-------|---------|---------|
+| Status | `[ ]` todo · `[x]` done | `[x]` |
+| Time | `HH:MM` | `09:30` |
+| Category | `@work` · `@study` · `@personal` · `@hobby` | `@work` |
+| Duration | `30m` · `1h` · `1h30m` | `1h30m` |
 
-### Navigating dates
-
-Use the `◀` / `▶` buttons at the top of the timeline to browse other dates.
+> Duration is required for the stats to be accurate. If omitted, the gap to the next task is used.
 
 ---
 
 ## Settings
 
-Go to Obsidian Settings → **Time Manager** to configure.
+**Settings → Time Manager**
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| Daily Note folder | `Daily Notes` | Folder where your Daily Notes are stored (dropdown) |
-| Section heading | `Timeline` | The `##` section name to parse as the timeline |
-| Daily work hour limit | `8h` | Shows an overload warning when exceeded (4–16h slider) |
-
----
-
-## Development
-
-```bash
-# Development mode (watch)
-npm run dev
-
-# Production build
-npm run build
-
-# Type check
-npm run typecheck
-```
-
-### File structure
-
-```
-src/
-├── main.ts                  Plugin entry point
-├── settings.ts              Settings tab
-├── types.ts                 Shared type definitions
-├── parser/
-│   ├── DailyNoteParser.ts   Read/write markdown files
-│   └── InlineFieldParser.ts Parse @tags and [key:: value] fields
-├── editor/
-│   ├── CategorySuggest.ts   @ autocomplete in the editor
-│   └── CategoryHighlight.ts Color highlight for @tags in the editor
-├── views/
-│   └── TimelineView.ts      Sidebar timeline view
-├── stats/
-│   └── StatsCalculator.ts   Daily stats calculation
-└── utils/
-    ├── DateUtils.ts         Date/time utilities
-    └── ObsidianUtils.ts     Vault file access helpers
-```
+| Daily Note folder | `Daily Notes` | Folder where your Daily Notes live |
+| Section heading | `Timeline` | The `##` heading to parse as the timeline |
+| Daily work hour limit | `8h` | Overload warning threshold (4–16h) |
 
 ---
 
