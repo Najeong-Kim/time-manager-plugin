@@ -1,5 +1,7 @@
 # Time Manager
 
+**[English](README.md)** · [한국어](README.ko.md)
+
 Visualize your Daily Note tasks as a timeline and track time spent by category — all inside Obsidian's sidebar.
 
 ![Demo GIF](assets/demo.gif)
